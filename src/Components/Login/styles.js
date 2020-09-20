@@ -31,4 +31,5 @@ export const StyledButton = styled(Button)`
 background : black;
 border-radius: 6px;
 border-color : black;
+width : 100%;
 `  
