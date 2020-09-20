@@ -4,13 +4,30 @@ import { Form , Select ,} from 'antd'
 import { UserOutlined  ,LockOutlined ,MailOutlined } from '@ant-design/icons';
 import {Container , StyledInput ,StyledSelect , StyledButton} from './styles'
 const SignUp = ()=> {
+
 const [userName , setUserName] = React.useState("")
 const [email , setEmail] = React.useState("")
-const [plan , setplan] = React.useState("")
+const [subscription_plan , setplan] = React.useState("")
 const [password , setpassword] = React.useState("")
 
+const register = ()=> {
+    fetch('http://127.0.0.1:8082/api/createUser', {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"username":userName, "email": email, "password":password, "subscription_plan":subscription_plan})
+        }).then((result) => {
+            result.json().then((resp) => {
+                console.log(resp.message)
+                localStorage.setItem("auth", JSON.stringify(resp.message))
+            })
+        })
+}
+
 const {Option} = Select
-console.log("data :" + userName , email , plan , password)
+console.log("data :" + userName , email , subscription_plan , password)
     return (
         <Container>
             <img src={signup} alt=""/>
@@ -30,15 +47,15 @@ console.log("data :" + userName , email , plan , password)
 <label>Subscription Plan </label>
 <Form.Item name="Select">
 
-<StyledSelect size="medium" defaultValue="lucy" onChange={(e)=> setplan(e)} >
-      <Option value="jack">Jack</Option>
-      <Option value="lucy">Lucy</Option>
-      <Option value="Yiminghe">yiminghe</Option>
+<StyledSelect size="medium" onChange={(e)=> setplan(e)} >
+      <Option value="Platinum">Platinum</Option>
+      <Option value="Gold">Gold</Option>
+      <Option value="Silver">Silver</Option>
     </StyledSelect>
 </Form.Item>
 <Form.Item name="Button">
     <span style={{display : "flex" , justifyContent : "center"}}>
-<StyledButton type="primary" > SignUp</StyledButton>
+<StyledButton type="submit" onClick={() => register()} > SignUp</StyledButton>
     </span>
         
 </Form.Item>
