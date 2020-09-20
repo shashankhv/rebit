@@ -1,6 +1,6 @@
 import React from 'react'
 import signup from '../../Assets/signup.svg'
-import { Form , Select ,} from 'antd'
+import { Form , Select ,Alert} from 'antd'
 import { UserOutlined  ,LockOutlined ,MailOutlined } from '@ant-design/icons';
 import {Container , StyledInput ,StyledSelect , StyledButton} from './styles'
 const SignUp = ()=> {
@@ -9,6 +9,7 @@ const [userName , setUserName] = React.useState("")
 const [email , setEmail] = React.useState("")
 const [subscription_plan , setplan] = React.useState("")
 const [password , setpassword] = React.useState("")
+const [errmsg, setErrmsg] = React.useState("") 
 
 const register = ()=> {
     fetch('http://127.0.0.1:8082/api/createUser', {
@@ -21,6 +22,7 @@ const register = ()=> {
         }).then((result) => {
             result.json().then((resp) => {
                 console.log(resp.message)
+                setErrmsg(resp.message)
                 localStorage.setItem("auth", JSON.stringify(resp.message))
             })
         })
@@ -30,6 +32,7 @@ const {Option} = Select
 console.log("data :" + userName , email , subscription_plan , password)
     return (
         <Container>
+            {errmsg === "Email Exists" ? <Alert message="Incorrect UserName or Password" type="error"/> : null}
             <img src={signup} alt=""/>
 <Form>
 <label>Username</label>

@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, LoginDiv, StyledInput, StyledButton } from './styles'
 import { Link } from 'react-router-dom'
 import login from '../../Assets/login.svg'
-import { Form } from 'antd'
+import { Form , Alert } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 const Login = () => {
     const [userName, setUserName] = React.useState("")
@@ -21,7 +21,8 @@ const Login = () => {
         }).then((result) => {
             result.json().then((resp) => {
                 console.log(resp.message)
-                setErrmsg(resp.message)
+               setErrmsg(resp.message)
+               
                 localStorage.setItem("auth", JSON.stringify(resp.message))
             })
         })
@@ -30,6 +31,7 @@ const Login = () => {
     
     return (
         <Container>
+            {errmsg === "Login Failed" ? <Alert message="Incorrect UserName or Password" type="error"/> : null}
             <LoginDiv>
                 <img src={login} alt="" />
                 <span>
